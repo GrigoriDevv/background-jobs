@@ -11,7 +11,7 @@ export class CreateUserController {
 
   @Post('create')
     async create(@Body() createUserDto: CreateUserDto) {
-    this.sendMailService.sendMail(createUserDto);
+     await this.sendMailService.sendMail(createUserDto);
 
     return createUserDto;
   }

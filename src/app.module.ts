@@ -5,6 +5,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { ConfigModule } from '@nestjs/config';
 import { RedisConnection } from 'bullmq';
 import { SendMailProducerService } from './jobs/sendEmail-producer-service';
+import { sendMailConsumer } from './jobs/sendEmail-consumer';
 
 
 @Module({
@@ -17,11 +18,12 @@ import { SendMailProducerService } from './jobs/sendEmail-producer-service';
           address: '127.0.0.1',
           host: 'localhost',
           port: 6379,
-       RedisConnection } ,
+       } ,
       }),
     }),
     BullModule.registerQueue({
       name: 'sendMail-queue',}),
+
 
     MailerModule.forRoot({
     transport: {
@@ -31,6 +33,7 @@ import { SendMailProducerService } from './jobs/sendEmail-producer-service';
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
       }}
+    
   
 
     })
@@ -38,6 +41,6 @@ import { SendMailProducerService } from './jobs/sendEmail-producer-service';
      
   ],
   controllers: [ CreateUserController],
-  providers: [SendMailProducerService],
+  providers: [SendMailProducerService, sendMailConsumer],
 })
 export class AppModule {}  
